@@ -21,14 +21,28 @@ p2ScoreElm.textContent = p2Score
 
 formElm.addEventListener('submit', e => {
     e.preventDefault()
-    //seting data layer
-    winScore = +inputElm.value
-    //setting view layer
-    winScoreElm.textContent = inputElm.value
-    //console.log(typeof inputElm.value)
 
-    //clearing the input field
-    inputElm.value = ''
+    const inputVal = +inputElm.value
+    //validation check
+    if (inputVal === '' || inputVal < 1) {
+        if (!document.querySelector('.invalid-input')) {
+            formElm.insertAdjacentHTML('beforebegin', '<p class="invalid-input">Please input valid number</p>')
+        }
+
+
+    } else {
+        //seting data layer
+        winScore = +inputElm.value
+        //setting view layer
+        winScoreElm.textContent = inputElm.value
+        //console.log(typeof inputElm.value)
+
+        //clearing the input field
+        inputElm.value = ''
+        //change to all default state 
+        initialPlayState()
+    }
+
 })
 
 
@@ -79,6 +93,24 @@ p2BtnElm.addEventListener('click', e => {
         p1BtnElm.removeAttribute('disabled')
     }
 })
+
+
+resetBtnElm.addEventListener('click', e => {
+    winScore = 20
+    initialPlayState()
+})
+
+
+function initialPlayState() {
+    p1Score = 0
+    p2Score = 0
+    turn = 'player1'
+    winScoreElm.textContent = winScore
+    p1ScoreElm.textContent = p1Score
+    p2ScoreElm.textContent = p2Score
+    p1BtnElm.removeAttribute('disabled')
+    p2BtnElm.removeAttribute('disabled')
+}
 
 
 
