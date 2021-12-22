@@ -19,9 +19,15 @@ winScoreElm.textContent = winScore
 p1ScoreElm.textContent = p1Score
 p2ScoreElm.textContent = p2Score
 
+
+
+function generateranNum(max) {
+    return Math.floor(Math.random() * max + 1)
+}
+
+
 formElm.addEventListener('submit', e => {
     e.preventDefault()
-
     const inputVal = +inputElm.value
     //validation check
     if (inputVal === '' || inputVal < 1) {
@@ -29,8 +35,10 @@ formElm.addEventListener('submit', e => {
             formElm.insertAdjacentHTML('beforebegin', '<p class="invalid-input">Please input valid number</p>')
         }
 
-
     } else {
+        if (document.querySelector('.invalid-input')) {
+            document.querySelector('.invalid-input').remove()
+        }
         //seting data layer
         winScore = +inputElm.value
         //setting view layer
@@ -42,14 +50,13 @@ formElm.addEventListener('submit', e => {
         //change to all default state 
         initialPlayState()
     }
-
 })
 
 
 
 p1BtnElm.addEventListener('click', e => {
     if (turn === 'player1') {
-        p1Score++
+        p1Score = generateranNum(winScore)
         p1ScoreElm.textContent = p1Score
         turn = 'player2'
         p1BtnElm.setAttribute('disabled', 'disabled')
@@ -58,6 +65,8 @@ p1BtnElm.addEventListener('click', e => {
         checkWinner()
     }
 })
+
+
 
 function checkWinner() {
     const isP1Winner = winScore === p1Score
@@ -70,15 +79,15 @@ function checkWinner() {
     }
 
     displayWinner(isP1Winner, isP2Winner)
-
-
 }
+
+
 
 function displayWinner(p1WinState, p2WinState) {
     if (p1WinState) {
-        formElm.insertAdjacentHTML('beforebegin', '<p>Player1 is Winner!</p>')
+        formElm.insertAdjacentHTML('beforebegin', '<p class="winnerMes">Player1 is Winner!</p>')
     } else if (p2WinState) {
-        formElm.insertAdjacentHTML('beforebegin', '<p>Player2 is Winner!</p>')
+        formElm.insertAdjacentHTML('beforebegin', '<p "winnerMes">Player2 is Winner!</p>')
     }
 }
 
@@ -86,7 +95,7 @@ function displayWinner(p1WinState, p2WinState) {
 
 p2BtnElm.addEventListener('click', e => {
     if (turn === 'player2') {
-        p2Score++
+        p2Score = generateranNum(winScore)
         p2ScoreElm.textContent = p2Score
         turn = 'player1'
         p2BtnElm.setAttribute('disabled', 'disabled')
@@ -95,10 +104,13 @@ p2BtnElm.addEventListener('click', e => {
 })
 
 
+
+
 resetBtnElm.addEventListener('click', e => {
     winScore = 20
     initialPlayState()
 })
+
 
 
 function initialPlayState() {
@@ -110,6 +122,10 @@ function initialPlayState() {
     p2ScoreElm.textContent = p2Score
     p1BtnElm.removeAttribute('disabled')
     p2BtnElm.removeAttribute('disabled')
+    //reset winning message
+    if (document.querySelector('.winnerMes')) {
+        document.querySelector('.winnerMes').remove()
+    }
 }
 
 
